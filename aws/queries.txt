@@ -1,0 +1,23 @@
+---------------------------
+--Athena 
+
+select count(*), device_type
+from views_view
+group by device_type
+---------------------------
+--------------------------
+--Kinesis SQL Appl
+
+-- STREAM (in-application): a continuously updated entity that you can SELECT from and INSERT into like a TABLE
+-- PUMP: an entity used to continuously 'SELECT ... FROM' a source STREAM, and INSERT SQL results into an output STREAM
+-- Create output stream, which can be used to send to a destination
+CREATE OR REPLACE STREAM "DESTINATION_SQL_STREAM" ("item_id" INTEGER, "items_count" INTEGER);
+-- Create a pump which continuously selects from a source stream (SOURCE_SQL_STREAM_001)
+-- performs an aggregate count that is grouped by columns ticker over a 10-second tumbling window
+-- and inserts into output stream (DESTINATION_SQL_STREAM)
+CREATE OR REPLACE PUMP "STREAM_PUMP" AS INSERT INTO "DESTINATION_SQL_STREAM"
+-- Aggregate function COUNT|AVG|MAX|MIN|SUM|STDDEV_POP|STDDEV_SAMP|VAR_POP|VAR_SAMP)
+SELECT STREAM "item_id", COUNT("item_id")  OVER (
+PARTITION BY "item_id" RANGE INTERVAL '60' SECOND PRECEDING) as "items_count" 
+FROM "SOURCE_SQL_STREAM_001"
+ORDER BY rowtime,"items_count" desc;
