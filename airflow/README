@@ -13,6 +13,5 @@ DOCKER
 docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 docker exec -it 964f9b460c42 sh
 ---------------
-vault kv put airflow/variables/slack_token value=xoxb-3629295791028-3629779349508-YfSdcOOGk
-kIjw3Js4AHwdVEa
+vault kv put airflow/variables/slack_token value=xoxb-3629295791028-...
 ---------------

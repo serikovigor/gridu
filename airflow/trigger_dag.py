@@ -118,7 +118,7 @@ def load_subdag(parent_dag_name, child_dag_name, args):
 
 
 def send_to_slack(txt):
-    global slack_token  # = 'xoxb-3629295791028-3629779349508-YfSdcOOGkkIjw3Js4AHwdVEa'
+    global slack_token  # = 'xoxb-3629295791028-...'
     client = WebClient(token=slack_token)
     try:
         response = client.chat_postMessage(
